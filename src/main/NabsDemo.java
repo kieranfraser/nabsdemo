@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
@@ -66,6 +67,7 @@ public class NabsDemo {
 	  			for(User user : users){
 	  				System.out.println(user.getId());
 	  			}
+	  			saveUserList(users);
 	  	    	/*repo = new BeadRepoManager();
 	  	    	repo.activateBead("SenderInfoBead");
 	  	    	repo.activateBead("SubjectInfoBead");
@@ -276,5 +278,54 @@ public class NabsDemo {
 			@Override
 			public void onCancelled(FirebaseError arg0) {}
 		});
+	}
+	
+	public static void saveUserList(ArrayList<User> users){
+		ArrayList<String> userStrings = new ArrayList<>();
+		Firebase database = new Firebase("https://nabsdemo.firebaseio.com/");
+		
+		/*for(User user: users){
+			try {
+				userStrings.add(FirebaseManager.convertUserToString(user));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		for(String userString: userStrings){
+			Firebase ref = database.child("users/").push();
+			ref.setValue(userString);
+		}*/
+		
+		for(User user: users){
+			String baseRef = "web/users/"+user.getId()+"/";
+			FirebaseManager.getDatabase().child(baseRef+"id/").setValue(user.getId());
+			FirebaseManager.getDatabase().child(baseRef+"favoriteApps/").setValue(user.getFavoriteApps());
+			FirebaseManager.getDatabase().child(baseRef+"activities/").setValue(user.getActivities());
+			FirebaseManager.getDatabase().child(baseRef+"events/").setValue(user.getEvents());
+			FirebaseManager.getDatabase().child(baseRef+"randomChoice/").setValue(user.getRandomChoice());
+			FirebaseManager.getDatabase().child(baseRef+"student/").setValue(user.isStudent());
+			FirebaseManager.getDatabase().child(baseRef+"stranger/").setValue(user.isStranger());
+			FirebaseManager.getDatabase().child(baseRef+"personality/").setValue(user.getPersonality());
+			FirebaseManager.getDatabase().child(baseRef+"percentageHome/").setValue(user.getPercentageHome());
+			FirebaseManager.getDatabase().child(baseRef+"percentageWork/").setValue(user.getPercentageWork());
+			FirebaseManager.getDatabase().child(baseRef+"percentageSocial/").setValue(user.getPercentageSocial());
+			FirebaseManager.getDatabase().child(baseRef+"sendingUserIds/").setValue(user.getSendingUserIds());
+			String notificationBaseRef = baseRef+"notifications/";
+			int id = 0;
+			for(Notification n: user.getNotifications()){
+				FirebaseManager.getDatabase().child(notificationBaseRef+"/"+id+"/"+"sender").setValue(n.getSender());
+				FirebaseManager.getDatabase().child(notificationBaseRef+"/"+id+"/"+"subject").setValue(n.getSubject());
+				FirebaseManager.getDatabase().child(notificationBaseRef+"/"+id+"/"+"app").setValue(n.getApp());
+				FirebaseManager.getDatabase().child(notificationBaseRef+"/"+id+"/"+"body").setValue(n.getBody());
+				FirebaseManager.getDatabase().child(notificationBaseRef+"/"+id+"/"+"date").setValue(n.getDate());
+				FirebaseManager.getDatabase().child(notificationBaseRef+"/"+id+"/"+"senderRank").setValue(n.getSenderRank());
+				FirebaseManager.getDatabase().child(notificationBaseRef+"/"+id+"/"+"subjectRank").setValue(n.getSubjectRank());
+				FirebaseManager.getDatabase().child(notificationBaseRef+"/"+id+"/"+"appRank").setValue(n.getAppRank());
+				FirebaseManager.getDatabase().child(notificationBaseRef+"/"+id+"/"+"bodyRank").setValue(n.getBodyRank());
+				FirebaseManager.getDatabase().child(notificationBaseRef+"/"+id+"/"+"dateRank").setValue(n.getDateRank());
+				id++;
+			}		
+		}
 	}
 }
