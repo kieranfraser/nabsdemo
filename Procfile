@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/gs-rest-service-0.1.0.jar
+web: java -Dserver.port=$PORT -jar target/NAbsDemo-0.0.1-SNAPSHOT.jar
