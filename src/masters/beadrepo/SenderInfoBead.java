@@ -9,6 +9,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import managers.FirebaseManager;
+import managers.NabsManager;
 import masters.calendar.CalendarEvent;
 import masters.calendar.GoogleCalendarData;
 import masters.fuzzylogic.SenderFuzzy;
@@ -29,6 +30,7 @@ Runnable{
 	
 	private List<BeadInputInterface> senderListeners = new ArrayList<BeadInputInterface>();
 	private UpliftedNotification  notification;
+	private NabsManager nm;
 	
 	public SenderInfoBead(){
 		ArrayList<String> sendToList = new ArrayList<String>();
@@ -56,9 +58,9 @@ Runnable{
 	 * Called when updates need to be pushed to other beads.
 	 */
 	@Override
-	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData) {
+	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData, NabsManager nm) {
 		for(BeadInputInterface listener : senderListeners){
-			listener.getEvidence(senderId, sentTime, outputData);
+			listener.getEvidence(senderId, sentTime, outputData, nm);
 		}
 	}
 
@@ -69,7 +71,7 @@ Runnable{
 	 * TODO: Get the next 5 events (need to send the notification date)
 	 */
 	@Override
-	public void getEvidence(String senderId, Date sentTime, Triplet inputData) {
+	public void getEvidence(String senderId, Date sentTime, Triplet inputData, NabsManager nm) {
 		System.out.println("Sender");
 		
 		/**
@@ -86,12 +88,12 @@ Runnable{
 		
 		// get the calendar data for the next 10 events
 		try {
-			events = GoogleCalendarData.getNextNEvents(10, notification.getDate());
+			events = GoogleCalendarData.getNextNEvents(10, notification.getDate(), nm);
 		} catch (IOException |  ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		this.nm = nm;
 		this.run();
 	}
 	
@@ -103,7 +105,7 @@ Runnable{
 	@Override
 	public void inferInfoBeadAttr() {
 		
-		double eventInput = EventInference.getEventImportanceValue("Sender", events, notification);
+		double eventInput = EventInference.getEventImportanceValue("Sender", events, notification, nm);
 
 		if(eventInput == 0.0){
 			eventInput = 0.00001;
@@ -140,7 +142,7 @@ Runnable{
 	public void run() {		
 		this.activate();		
 		inferInfoBeadAttr();
-		sendToConsumer(this.getAttributeValueType().toString(), new Date(), this.getOperational());
+		sendToConsumer(this.getAttributeValueType().toString(), new Date(), this.getOperational(), nm);
 		storeInfoBeadAttr();
 	}
 

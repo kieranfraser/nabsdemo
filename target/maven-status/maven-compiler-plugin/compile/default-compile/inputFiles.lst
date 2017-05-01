@@ -12,6 +12,7 @@ C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\inter\BeadOutputInterface.ja
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\models\UpliftedNotification.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\constants\BeadType.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\main\NabsDemo.java
+C:\Users\kfraser\workspaceMars\NAbsDemo\src\managers\NabsManager.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\beadrepo\BodyInfoBead.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\beadrepo\UserLocationInfoBead.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\PhDProject\FriendsFamily\Models\Subject.java
@@ -26,7 +27,9 @@ C:\Users\kfraser\workspaceMars\NAbsDemo\src\PhDProject\FriendsFamily\Models\Noti
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\managers\FirebaseManager.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\constants\ConnectionType.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\constants\State.java
+C:\Users\kfraser\workspaceMars\NAbsDemo\src\controllers\Result.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\calendar\GoogleCalendarData.java
+C:\Users\kfraser\workspaceMars\NAbsDemo\src\controllers\ResultController.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\beadrepo\SubjectInfoBead.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\models\Triplet.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\PhDProject\FriendsFamily\Models\Result.java

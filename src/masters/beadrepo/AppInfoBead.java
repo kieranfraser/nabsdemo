@@ -9,6 +9,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import managers.FirebaseManager;
+import managers.NabsManager;
 import masters.calendar.CalendarEvent;
 import masters.calendar.GoogleCalendarData;
 import masters.inter.BeadInputInterface;
@@ -26,6 +27,7 @@ BeadOutputInterface, Runnable{
 	ArrayList<CalendarEvent> events;
 	private UpliftedNotification  notification;
 	private List<BeadInputInterface> appListeners = new ArrayList<BeadInputInterface>();
+	private NabsManager nm;
 	
 	public AppInfoBead(){
 		ArrayList<String> sendToList = new ArrayList<String>();
@@ -53,15 +55,15 @@ BeadOutputInterface, Runnable{
 	 * Called when updates need to be pushed to other beads.
 	 */
 	@Override
-	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData) {
+	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData, NabsManager nm) {
 		for(BeadInputInterface listener : appListeners){
-			listener.getEvidence(senderId, sentTime, outputData);
+			listener.getEvidence(senderId, sentTime, outputData, nm);
 		}
 		
 	}
 
 	@Override
-	public void getEvidence(String senderId, Date sentTime, Triplet inputData) {
+	public void getEvidence(String senderId, Date sentTime, Triplet inputData, NabsManager nm) {
 		System.out.println("App");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -74,12 +76,12 @@ BeadOutputInterface, Runnable{
 		
 		// get the calendar data for the next 10 events
 		try {
-			events = GoogleCalendarData.getNextNEvents(10, notification.getDate());
+			events = GoogleCalendarData.getNextNEvents(10, notification.getDate(), nm);
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-				
+		this.nm = nm;
 		this.run();		
 	}
 
@@ -114,7 +116,7 @@ BeadOutputInterface, Runnable{
 	public void run() {
 		this.activate();
 		inferInfoBeadAttr();
-		sendToConsumer(this.getAttributeValueType().toString(), new Date(), this.getOperational());
+		sendToConsumer(this.getAttributeValueType().toString(), new Date(), this.getOperational(), this.nm);
 		storeInfoBeadAttr();
 	}	
 }

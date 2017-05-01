@@ -9,7 +9,7 @@ import java.util.Date;
 
 import PhDProject.FriendsFamily.Models.Event;
 import PhDProject.FriendsFamily.Models.User;
-import main.NabsDemo;
+import managers.NabsManager;
 import phd.utilities.DateFormatUtility;
 
 
@@ -32,7 +32,7 @@ public class GoogleCalendarData {
      * @throws ParseException 
      * @throws IOException 
      */
-    public static ArrayList<CalendarEvent> getNextNEvents(int n, Date dateFrom) 
+    public static ArrayList<CalendarEvent> getNextNEvents(int n, Date dateFrom, NabsManager nm) 
     		throws ParseException, IOException {
     	counter = 0;
     	possibleEvents = new ArrayList<>();
@@ -40,7 +40,7 @@ public class GoogleCalendarData {
     	
     	ArrayList<CalendarEvent> requiredEvents = new ArrayList<>();
     	
-    	User user = NabsDemo.getSelectedUser();
+    	User user = nm.getSelectedUser();
     	
 		// check day - if day of week, get work/study
 		LocalDateTime notificationDate = DateFormatUtility.convertDateToLDT(dateFrom);
@@ -148,7 +148,7 @@ public class GoogleCalendarData {
      * @throws ParseException
      * @throws IOException
      */
-   public static CalendarEvent getNextEvent(Date dateFrom)
+   public static CalendarEvent getNextEvent(Date dateFrom, NabsManager nm)
 	   throws ParseException, IOException {
    		/*com.google.api.services.calendar.Calendar service = getCalendarService();
     	calendarIDS = new ArrayList<String>();
@@ -165,7 +165,7 @@ public class GoogleCalendarData {
     	Date convertedEndDate = DateUtility.convertEventDateTimeToDate(items.get(0).getEnd());
     	CalendarEvent event = new CalendarEvent(items.get(0).getDescription(),
     			convertedStartDate, convertedEndDate, items.get(0).getLocation(), items.get(0).getSummary());*/
-	    ArrayList<CalendarEvent> events = getNextNEvents(10, dateFrom);
+	    ArrayList<CalendarEvent> events = getNextNEvents(10, dateFrom, nm);
 	    CalendarEvent nextEvent = events.get(0);
         return nextEvent;
     }

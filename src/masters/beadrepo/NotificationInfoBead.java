@@ -11,6 +11,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import managers.FirebaseManager;
+import managers.NabsManager;
 import masters.inter.BeadInputInterface;
 import masters.inter.BeadOutputInterface;
 import masters.models.InfoItemFields;
@@ -34,45 +35,36 @@ public class NotificationInfoBead extends InformationBead implements BeadInputIn
 		this.setAuthorizationToSendToID(sendToList);
 	}
 	
-	public void notificationReceived(){
-		FirebaseManager.getDatabase().child("CurrentNotification/").addValueEventListener(new ValueEventListener() {
-			@Override
-			public void onDataChange(DataSnapshot snapshot) {
-				System.out.println("Subscribe to current notification");
-				if(snapshot.getValue()!=null){
-					UpliftedNotification notification = snapshot.getValue(UpliftedNotification.class);
-					Date receivedNotificationDate = new Date();
-					activate();
-					Triplet operational = new Triplet();
-					operational.setDetectionTime(receivedNotificationDate);
-					
-					InfoItemFields information = new InfoItemFields();
-					ObjectMapper mapper = new ObjectMapper();
-					String notificationString = null;
-					try {
-						 notificationString = mapper.writeValueAsString(notification);
-					} catch (JsonProcessingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					information.setInformationValue(notificationString);
-					information.setInfoAccuracy(100.0);
-					information.setInfoConfidenceLevel(100.0);
-					information.setInfoValidFrom(receivedNotificationDate);
-					information.setInfoBeadId(notification.getNotificationId());
-					
-					operational.setInformationItem(information);
-					setOperational(operational);
-					
-					// Update the bead in database
-					storeInfoBeadAttr();
-					
-					// push triplet to listening beads - sender, subject
-					sendToConsumer(getId(), receivedNotificationDate, operational);
-				}	  			
-			}
-			@Override public void onCancelled(FirebaseError error) { }
-  		});
+	public void notificationReceived(UpliftedNotification notification, NabsManager nm){
+		
+		Date receivedNotificationDate = new Date();
+		activate();
+		Triplet operational = new Triplet();
+		operational.setDetectionTime(receivedNotificationDate);
+		
+		InfoItemFields information = new InfoItemFields();
+		ObjectMapper mapper = new ObjectMapper();
+		String notificationString = null;
+		try {
+			 notificationString = mapper.writeValueAsString(notification);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		information.setInformationValue(notificationString);
+		information.setInfoAccuracy(100.0);
+		information.setInfoConfidenceLevel(100.0);
+		information.setInfoValidFrom(receivedNotificationDate);
+		information.setInfoBeadId(notification.getNotificationId());
+		
+		operational.setInformationItem(information);
+		setOperational(operational);
+		
+		// Update the bead in database
+		storeInfoBeadAttr();
+		
+		// push triplet to listening beads - sender, subject
+		sendToConsumer(getId(), receivedNotificationDate, operational, nm);
 	}
 	
 	public void notificationToCompute(UpliftedNotification notification){
@@ -103,7 +95,7 @@ public class NotificationInfoBead extends InformationBead implements BeadInputIn
 		storeInfoBeadAttr();
 		
 		// push triplet to listening beads - sender, subject
-		sendToConsumer(getId(), receivedNotificationDate, operational);
+		//sendToConsumer(getId(), receivedNotificationDate, operational, nm);
 	}
 
 	
@@ -133,9 +125,9 @@ public class NotificationInfoBead extends InformationBead implements BeadInputIn
 	 * Called when updates need to be pushed to other beads.
 	 */
 	@Override
-	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData) {
+	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData, NabsManager nm) {
 		for(BeadInputInterface listener : listeners){
-			listener.getEvidence(senderId, sentTime, outputData);
+			listener.getEvidence(senderId, sentTime, outputData, nm);
 		}
 	}
 
@@ -143,6 +135,6 @@ public class NotificationInfoBead extends InformationBead implements BeadInputIn
 	 * Called to get sensor evidence or push events.
 	 */
 	@Override
-	public void getEvidence(String senderId, Date sentTime, Triplet inputData) {}
+	public void getEvidence(String senderId, Date sentTime, Triplet inputData, NabsManager nm) {}
 
 }

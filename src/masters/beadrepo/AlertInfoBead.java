@@ -1,10 +1,10 @@
 package masters.beadrepo;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import PhDProject.FriendsFamily.Models.Result;
-import main.NabsDemo;
-import managers.FirebaseManager;
+import managers.NabsManager;
 import masters.fuzzylogic.AlertFuzzy;
 import masters.inter.BeadInputInterface;
 import masters.inter.BeadOutputInterface;
@@ -36,6 +36,8 @@ Runnable{
 	 * Used for identifying the results in NabSim
 	 */
 	private int notificationIdPath;
+	
+	private NabsManager nm;
 
 	/**
 	 * Must be initialized to ~0 for fuzzy controller.
@@ -65,7 +67,7 @@ Runnable{
 		}else if(inferredValue<15){ 
 			
 			if(userLocation == 1.0){ // if there's an event on
-				result = result + "Next break - "+NabsDemo.getNextBreak()+" - "+this.getPartNumber()+"\n";
+				result = result + "Next break - "+nm.getNextBreak()+" - "+this.getPartNumber()+"\n";
 				
 			}
 			else{
@@ -77,7 +79,7 @@ Runnable{
 			
 			
 			if(userLocation == 1.0){
-				result = result + "Next free period "+NabsDemo.getNextFreePeriod()+" - "+this.getPartNumber()+"\n";
+				result = result + "Next free period "+nm.getNextFreePeriod()+" - "+this.getPartNumber()+"\n";
 			}
 			else{
 				result = result + "Now "+this.getPartNumber()+"\n";
@@ -85,10 +87,10 @@ Runnable{
 			
 		// Later & Much Later	
 		}else if(inferredValue<60){ 
-			result = result + "Little Later "+NabsDemo.getNextContextRelevant()+" - "+"\n";
+			result = result + "Little Later "+nm.getNextContextRelevant()+" - "+"\n";
 		}
 		else{
-			result = result + "Much Later "+NabsDemo.getNextContextRelevant()+" - "+"\n";
+			result = result + "Much Later "+nm.getNextContextRelevant()+" - "+"\n";
 		}
 		//System.out.println(result);
 		//App.resultCallback.resultCallback(Integer.valueOf(this.getPartNumber()), result);
@@ -100,13 +102,13 @@ Runnable{
 	}
 
 	@Override
-	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData) {}
+	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData, NabsManager nm) {}
 
 	/**
 	 * The triplets received are from the sender and subject beads.
 	 */
 	@Override
-	public void getEvidence(String senderId, Date sentTime, Triplet inputData) {
+	public void getEvidence(String senderId, Date sentTime, Triplet inputData, NabsManager nm) {
 		notificationIdPath = inputData.getInformationItem().getInfoBeadId();
 		switch(senderId){
 		case "SUBJECT":
@@ -120,6 +122,7 @@ Runnable{
 		case "LOCATION":
 			this.userLocation = Double.valueOf(inputData.getInformationItem().getInformationValue());
 		}
+		this.nm = nm;
 		this.run();
 	}
 
@@ -129,12 +132,22 @@ Runnable{
 	 */
 	@Override
 	public void storeInfoBeadAttr() {
-		FirebaseManager.getDatabase().child("BeadRepo/"+
+		/*FirebaseManager.getDatabase().child("BeadRepo/"+
 				this.getAttributeValueType()+"/").setValue((InformationBead) this);
 		
 		FirebaseManager.getDatabase().child("web/results/"+notificationIdPath).
-		setValue(new Result(notificationIdPath, this.getOperational().getInformationItem().getInformationValue()));
-		
+		setValue(new Result(notificationIdPath, this.getOperational().getInformationItem().getInformationValue()));*/
+		ArrayList<Result> results = nm.results;
+		boolean found = false;
+		for(Result val:results){
+			if(val.getId() == notificationIdPath ){
+				val.setResult(this.getOperational().getInformationItem().getInformationValue());
+				found = true;
+				break;
+			}
+		}
+		if(!found)
+			nm.results.add(new Result(notificationIdPath, this.getOperational().getInformationItem().getInformationValue()));
 		
 		/*FirebaseManager.getDatabase().child("Exp1/"+App.getCurrentParamId()+"/"+
 				App.getCurrentUserId()+"/"+notificationIdPath).

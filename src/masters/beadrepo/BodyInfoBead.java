@@ -8,6 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import managers.FirebaseManager;
+import managers.NabsManager;
 import masters.inter.BeadInputInterface;
 import masters.inter.BeadOutputInterface;
 import masters.models.InformationBead;
@@ -46,15 +47,15 @@ BeadOutputInterface, Runnable{
 	}
 
 	@Override
-	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData) {
+	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData, NabsManager nm) {
 		for(BeadInputInterface listener : bodyListeners){
-			listener.getEvidence(senderId, sentTime, outputData);
+			listener.getEvidence(senderId, sentTime, outputData, nm);
 		}
 		
 	}
 
 	@Override
-	public void getEvidence(String senderId, Date sentTime, Triplet inputData) {
+	public void getEvidence(String senderId, Date sentTime, Triplet inputData, NabsManager nm) {
 		System.out.println("Body");
 		ObjectMapper mapper = new ObjectMapper();
 		try {

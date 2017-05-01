@@ -8,8 +8,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import main.NabsDemo;
 import managers.FirebaseManager;
+import managers.NabsManager;
 import masters.calendar.CalendarEvent;
 import masters.calendar.GoogleCalendarData;
 import masters.inference.EventInference;
@@ -31,6 +31,8 @@ Runnable{
 	private String calendarLocation;
 		
 	private List<BeadInputInterface> locationListeners = new ArrayList<BeadInputInterface>();
+	
+	private NabsManager nm;
 	
 	public UserLocationInfoBead(){
 		ArrayList<String> sendToList = new ArrayList<String>();
@@ -58,9 +60,9 @@ Runnable{
 	 * Called when updates need to be pushed to other beads.
 	 */
 	@Override
-	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData) {
+	public void sendToConsumer(String senderId, Date sentTime, Triplet outputData, NabsManager nm) {
 		for(BeadInputInterface listener : locationListeners){
-			listener.getEvidence(senderId, sentTime, outputData);
+			listener.getEvidence(senderId, sentTime, outputData, nm);
 		}
 	}
 
@@ -69,7 +71,7 @@ Runnable{
 	 * the friends & family data-set.
 	 */
 	@Override
-	public void getEvidence(String senderId, Date sentTime, Triplet inputData) {
+	public void getEvidence(String senderId, Date sentTime, Triplet inputData, NabsManager nm) {
 		System.out.println("Location");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -80,24 +82,24 @@ Runnable{
 			e1.printStackTrace();
 		}
 		// Get the location data
-		userLocation = NabsDemo.getUserLocation();
+		userLocation = nm.getUserLocation();
 		
 		CalendarEvent event = null;
 		try {
-			event = GoogleCalendarData.getNextEvent(notification.getDate());
+			event = GoogleCalendarData.getNextEvent(notification.getDate(), nm);
 		} catch (ParseException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		ArrayList<String> userDetails = EventInference.getCurrentLocationAndEventName(event, notification);
+		ArrayList<String> userDetails = EventInference.getCurrentLocationAndEventName(event, notification, nm);
 		calendarLocation = userDetails.get(1);
 							
 		if( (notification.getDate().before(event.getEndDate()) || notification.getDate().equals(event.getEndDate())) 
 				&& (notification.getDate().after(event.getStartDate()) || notification.getDate().equals(event.getStartDate())) ){
     		calendarLocation = "event";
     	}
-				
+		this.nm = nm;
 		this.run();
 	}
 	
@@ -147,7 +149,7 @@ Runnable{
 	public void run() {
 		this.activate();		
 		inferInfoBeadAttr();
-		sendToConsumer(this.getAttributeValueType().toString(), new Date(), this.getOperational());
+		sendToConsumer(this.getAttributeValueType().toString(), new Date(), this.getOperational(), this.nm);
 		storeInfoBeadAttr();
 	}
 

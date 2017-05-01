@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import main.NabsDemo;
+import managers.NabsManager;
 import masters.calendar.CalendarEvent;
 import masters.models.UpliftedNotification;
 import phd.utilities.DateUtility;
@@ -15,7 +15,7 @@ import phd.utilities.DateUtility;
 public class EventInference {
 	
 	public static double getEventImportanceValue(String attribute, ArrayList<CalendarEvent> events,
-			UpliftedNotification notification){
+			UpliftedNotification notification, NabsManager nm){
 		
 		ArrayList<CalendarEvent> unfinishedEvents = new ArrayList<>();
 		
@@ -55,12 +55,12 @@ public class EventInference {
 					long diff = DateUtility.getDifferenceBetweenDatesInMinutes(endThisEvent, startNextEvent);
 					if(diff>15){
 						
-						NabsDemo.setNextFreePeriod(event.getEndDate());
+						nm.setNextFreePeriod(event.getEndDate());
 						freePeriodSet = true;
 					}
 				}
 				else{
-					NabsDemo.setNextFreePeriod(event.getEndDate());
+					nm.setNextFreePeriod(event.getEndDate());
 				}
 			}
 			
@@ -79,11 +79,11 @@ public class EventInference {
 		}
 		if(maxEntry!=null){
 			System.out.println("Context relevant "+maxEntry.getKey().getStartDate());
-			NabsDemo.setNextContextRelevant(maxEntry.getKey().getStartDate());
+			nm.setNextContextRelevant(maxEntry.getKey().getStartDate());
 		}
 		else{
 			System.out.println("No context relevant");
-			NabsDemo.setNextContextRelevant(NabsDemo.getNextFreePeriod());
+			nm.setNextContextRelevant(nm.getNextFreePeriod());
 		}
 		
 		return Collections.max(rankingValue);
@@ -141,7 +141,7 @@ public class EventInference {
 	 * @param notification
 	 * @return StringArray with the summary at index 0 and location at index 1
 	 */
-	public static ArrayList<String> getCurrentLocationAndEventName(CalendarEvent event, UpliftedNotification notification){
+	public static ArrayList<String> getCurrentLocationAndEventName(CalendarEvent event, UpliftedNotification notification, NabsManager nm){
 		ArrayList<String> result = new ArrayList<String>();
 		
 		LocalDateTime notificationDate = DateUtility.dateToLocalDateTime(notification.getDate());
@@ -161,7 +161,7 @@ public class EventInference {
 				}
 				// Set next break
 				Date nextBreak = event.getEndDate();
-				NabsDemo.setNextBreak(nextBreak);
+				nm.setNextBreak(nextBreak);
 			}
 			else{
 				result.add("none");

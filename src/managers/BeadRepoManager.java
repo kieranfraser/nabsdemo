@@ -21,7 +21,7 @@ import masters.models.UpliftedNotification;
 
 public class BeadRepoManager {
 	
-	private final String BEAD_REPO_PACKAGE = "MastersProject.BeadRepo";
+	private final String BEAD_REPO_PACKAGE = "masters.beadrepo";
 
 	private List<String> allInfoBeads;
 	private Map<String, Boolean> activeInfoBeads;
@@ -126,10 +126,10 @@ public class BeadRepoManager {
 		});		
 	}
 	
-	public void activateNotificationListener(){
+	public void activateNotificationListener(UpliftedNotification n, NabsManager nm){
 		if(activeBeadObjects.get(NotificationInfoBead.NAME)!=null){
 			NotificationInfoBead bead = (NotificationInfoBead) activeBeadObjects.get(NotificationInfoBead.NAME);
-			bead.notificationReceived();
+			bead.notificationReceived(n, nm);
 		}
 	}
 	

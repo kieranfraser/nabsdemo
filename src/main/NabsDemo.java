@@ -6,6 +6,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
+
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -13,18 +21,20 @@ import com.firebase.client.ValueEventListener;
 
 import PhDProject.FriendsFamily.Models.Notification;
 import PhDProject.FriendsFamily.Models.User;
+import controllers.ResultController;
 import managers.BeadRepoManager;
 import managers.FirebaseManager;
 import masters.models.UpliftedNotification;
 import phd.utilities.DateUtility;
 
-
+@SpringBootApplication
+@ComponentScan(basePackageClasses = ResultController.class)
 public class NabsDemo {
 	
 	private static String exitFlag = "";
 	private static final String EXIT = "exit";
 	
-	private static ArrayList<User> users;
+	public static ArrayList<User> users;
 	private static BeadRepoManager repo;
 	
 	private static User selectedUser = null;
@@ -41,9 +51,24 @@ public class NabsDemo {
 	private static String userEvent = "";
 
 	public static void main(String[] args){
-		initNabsServer();
+		SpringApplication.run(NabsDemo.class, args);
+		/*initNabsServer();
 		listenForClose();		
-		while(!exitFlag.trim().equals(EXIT));
+		while(!exitFlag.trim().equals(EXIT));*/
+	}
+	
+	@Bean
+	public TaskExecutor taskExecutor() {
+	    return new SimpleAsyncTaskExecutor(); // Or use another one of your liking
+	}
+	
+	@Bean
+	public CommandLineRunner schedulingRunner(TaskExecutor executor) {
+	    return new CommandLineRunner() {
+	        public void run(String... args) throws Exception {
+	            initNabsServer();
+	        }
+	    };
 	}
 
 	private static void initNabsServer(){
@@ -64,10 +89,7 @@ public class NabsDemo {
 						e.printStackTrace();
 					}
 	  			}
-	  			for(User user : users){
-	  				System.out.println(user.getId());
-	  			}
-	  			saveUserList(users);
+	  			//saveUserList(users);
 	  	    	/*repo = new BeadRepoManager();
 	  	    	repo.activateBead("SenderInfoBead");
 	  	    	repo.activateBead("SubjectInfoBead");
@@ -221,7 +243,7 @@ public class NabsDemo {
 		FirebaseManager.getDatabase().child("currentnotification/").setValue(notification);
 	}
 
-	public static String getUserLocation() {
+	/*public static String getUserLocation() {
 		return userLocation;
 	}
 
@@ -263,7 +285,7 @@ public class NabsDemo {
 	
 	public static User getSelectedUser(){
 		return selectedUser;
-	}
+	}*/
 	
 	private static void listenForClose() {
 		FirebaseManager.getDatabase().child("exitFlag/").addValueEventListener(new ValueEventListener() {
