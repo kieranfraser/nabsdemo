@@ -33,6 +33,7 @@ public class NabsManager {
 	private String userEvent = "";
 	
 	public ArrayList<Result> results = null;
+	public ParamManager pm = null;
 	
 	/**
 	 * Fire all user notifications - given only user value, assume
@@ -41,6 +42,8 @@ public class NabsManager {
 	 */
 	public NabsManager(String user){
 	  	selectedUser = getUserFromId(user);
+	  	
+	  	pm = new ParamManager();
 	  	
 	  	repo = new BeadRepoManager();
     	repo.activateBead("SenderInfoBead");

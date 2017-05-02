@@ -13,6 +13,7 @@ import com.fuzzylite.term.Triangle;
 import com.fuzzylite.variable.InputVariable;
 import com.fuzzylite.variable.OutputVariable;
 
+import managers.NabsManager;
 import managers.ParamManager;
 
 
@@ -26,11 +27,11 @@ public class AlertFuzzy {
 	String[] params;
 	ArrayList<Double> mParams;
 	
-	public AlertFuzzy(){
+	public AlertFuzzy(NabsManager nm){
 
-		params = ParamManager.getParamManager().getAlertParams();
+		params = nm.pm.getAlertParams();
 		
-		mParams = ParamManager.getParamManager().getAlertMParams();
+		mParams = nm.pm.getAlertMParams();
 		
 	    engine = new Engine();
 	    engine.setName("alert-context");

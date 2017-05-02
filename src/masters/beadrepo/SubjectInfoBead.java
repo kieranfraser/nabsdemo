@@ -110,7 +110,7 @@ Runnable{
 		}
 		
 		// Mamdami inferrence controller 
-		SubjectFuzzy senderFuzzy = new SubjectFuzzy();
+		SubjectFuzzy senderFuzzy = new SubjectFuzzy(nm);
 		double subjectInput = (double) notification.getSubjectRank()/10.0;
 		System.out.println("event relevance = "+ eventInput);
 		double inferredValue = senderFuzzy.processSubject(subjectInput, eventInput);

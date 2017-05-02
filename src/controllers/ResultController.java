@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import managers.NabsManager;
+import managers.ParamManager;
 
 @CrossOrigin(origins = "*", maxAge=3600)
 @RestController
@@ -28,5 +29,30 @@ public class ResultController {
     	}*/
     	NabsManager nm = new NabsManager(user);
     	return nm.fireNotifications();
+    }
+    
+    @RequestMapping("/resultparam")
+    public ArrayList<PhDProject.FriendsFamily.Models.Result> resultWithParams(@RequestParam(value="user", defaultValue="user") String user, 
+    			@RequestParam(value="notifid", defaultValue="notifId") String params) {
+  	
+    	
+    	NabsManager nm = new NabsManager(user);
+    	return nm.fireNotifications();
+    }
+    
+    @RequestMapping("/params")
+    public String[] getParams(@RequestParam(value="type", defaultValue="alert") String type) {
+
+    	ParamManager pm = new ParamManager();
+    	switch(type){
+    	case "alert":
+        	return pm.getAlertParams();
+    	case "sender":
+    		return pm.getSenderParams();
+    	case "subject":
+    		return pm.getSubjectParams();
+    	default:
+    		return null;
+    	}
     }
 }

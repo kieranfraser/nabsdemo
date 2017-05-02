@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ParamManager {
-	
-	private static ParamManager instance;
 
 	public static final String LOW = "LOW";
 	public static final String MEDIUM = "MEDIUM";
@@ -39,18 +37,9 @@ public class ParamManager {
 			 																57.5, 77.5};
 	private ArrayList<Double> alertMParams;
 	
-	public static synchronized ParamManager getParamManager(){
-		if(instance!=null){
-			return instance;
-		}
-		else{
-			instance = new ParamManager();
-			instance.initializeParams();
-			return instance;
-		}
+	public ParamManager(){
+		initializeParams();
 	}
-	
-	public ParamManager(){}
 	
 	private void initializeParams(){
 		alertMParams = new ArrayList<Double>(Arrays.asList(alertMembershipParams));
@@ -80,7 +69,7 @@ public class ParamManager {
 		this.alertParams = alertParams;
 	}	
 	
-	public static ArrayList<String> convertBestToParamArray(ArrayList<Integer> gBest){
+	public ArrayList<String> convertBestToParamArray(ArrayList<Integer> gBest){
 		ArrayList<String> convertedArray = new ArrayList<String>();
 		int position = 0;
 		for(int value: gBest){
@@ -121,7 +110,7 @@ public class ParamManager {
 		return convertedArray;
 	}
 	
-	public static String[] getSenderParams(ArrayList<String> gBest){
+	public String[] getSenderParams(ArrayList<String> gBest){
 		ArrayList<String> senderParams = new ArrayList<String>();
 		for(int i=0; i<9; i++){
 			senderParams.add(gBest.get(i));
@@ -130,7 +119,7 @@ public class ParamManager {
 		return senderParams.toArray(result);
 	}
 	
-	public static String[] getSubjectParams(ArrayList<String> gBest){
+	public String[] getSubjectParams(ArrayList<String> gBest){
 		ArrayList<String> subjectParams = new ArrayList<String>();
 		for(int i=9; i<18; i++){
 			subjectParams.add(gBest.get(i));
@@ -139,7 +128,7 @@ public class ParamManager {
 		return subjectParams.toArray(result);
 	}
 	
-	public static String[] getAlertParams(ArrayList<String> gBest){
+	public String[] getAlertParams(ArrayList<String> gBest){
 		ArrayList<String> alertParams = new ArrayList<String>();
 		for(int i=18; i<45; i++){
 			alertParams.add(gBest.get(i));

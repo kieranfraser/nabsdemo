@@ -12,6 +12,7 @@ import com.fuzzylite.term.ZShape;
 import com.fuzzylite.variable.InputVariable;
 import com.fuzzylite.variable.OutputVariable;
 
+import managers.NabsManager;
 import managers.ParamManager;
 
 public class SubjectFuzzy {
@@ -22,8 +23,8 @@ public class SubjectFuzzy {
 	
 	String[] params;
 	
-	public SubjectFuzzy(){
-		params = ParamManager.getParamManager().getSubjectParams();
+	public SubjectFuzzy(NabsManager nm){
+		params =nm.pm.getSubjectParams();
 		
 	    engine = new Engine();
 	    engine.setName("subject-context");

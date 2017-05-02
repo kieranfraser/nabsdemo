@@ -51,7 +51,7 @@ Runnable{
 	@Override
 	public void inferInfoBeadAttr() {
 		// Mamdami inferrence controller 
-		AlertFuzzy alertFuzzy = new AlertFuzzy();
+		AlertFuzzy alertFuzzy = new AlertFuzzy(nm);
 		double inferredValue = alertFuzzy.processalert(senderInput, subjectInput, appInput);
 		
 		//String result = "Receive Notification "+this.getPartNumber()+" in: "+DateUtility.cleanMinutes(inferredValue)+"\n";

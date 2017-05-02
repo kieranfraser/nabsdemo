@@ -112,7 +112,7 @@ Runnable{
 		}
 		
 		// Mamdami inferrence controller 
-		SenderFuzzy senderFuzzy = new SenderFuzzy();
+		SenderFuzzy senderFuzzy = new SenderFuzzy(nm);
 		double senderInput = (double) notification.getSenderRank()/10.0;
 		System.out.println("SenderInput: "+senderInput);
 		System.out.println("EventInput: "+eventInput);

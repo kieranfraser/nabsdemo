@@ -12,6 +12,7 @@ import com.fuzzylite.term.ZShape;
 import com.fuzzylite.variable.InputVariable;
 import com.fuzzylite.variable.OutputVariable;
 
+import managers.NabsManager;
 import managers.ParamManager;
 
 public class SenderFuzzy {
@@ -22,8 +23,8 @@ public class SenderFuzzy {
 	
 	String[] params;
 	
-	public SenderFuzzy(){
-		params = ParamManager.getParamManager().getSenderParams();
+	public SenderFuzzy(NabsManager nm){
+		params = nm.pm.getSenderParams();
 		
 	    engine = new Engine();
 	    engine.setName("sender-context");
