@@ -31,12 +31,13 @@ public class ResultController {
     	return nm.fireNotifications();
     }
     
-    @RequestMapping("/resultparam")
+    @RequestMapping("/resultparams")
     public ArrayList<PhDProject.FriendsFamily.Models.Result> resultWithParams(@RequestParam(value="user", defaultValue="user") String user, 
-    			@RequestParam(value="notifid", defaultValue="notifId") String params) {
+    			@RequestParam(value="params", defaultValue="null") String[] params) {
   	
     	
     	NabsManager nm = new NabsManager(user);
+    	nm.pm.setAlertParams(params);
     	return nm.fireNotifications();
     }
     
