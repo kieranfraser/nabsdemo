@@ -137,17 +137,37 @@ Runnable{
 		
 		FirebaseManager.getDatabase().child("web/results/"+notificationIdPath).
 		setValue(new Result(notificationIdPath, this.getOperational().getInformationItem().getInformationValue()));*/
+		String preResult = this.getOperational().getInformationItem().getInformationValue().trim();
+		String resultVal = "";
+		if(preResult.contains("Now")){
+			resultVal = "now";
+		}
+		if(preResult.contains("break")){
+			resultVal = "break";
+		}
+		if(preResult.contains("period")){
+			resultVal = "free period";
+		}
+		if(preResult.contains("Little Later")){
+			resultVal = "little later";
+		}
+		if(preResult.contains("Much Later")){
+			resultVal = "much later";
+		}
+		
+		
+		
 		ArrayList<Result> results = nm.results;
 		boolean found = false;
 		for(Result val:results){
 			if(val.getId() == notificationIdPath ){
-				val.setResult(this.getOperational().getInformationItem().getInformationValue());
+				val.setResult(resultVal);
 				found = true;
 				break;
 			}
 		}
 		if(!found)
-			nm.results.add(new Result(notificationIdPath, this.getOperational().getInformationItem().getInformationValue()));
+			nm.results.add(new Result(notificationIdPath, resultVal));
 		
 		/*FirebaseManager.getDatabase().child("Exp1/"+App.getCurrentParamId()+"/"+
 				App.getCurrentUserId()+"/"+notificationIdPath).
