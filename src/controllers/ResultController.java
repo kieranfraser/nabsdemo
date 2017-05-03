@@ -77,7 +77,6 @@ public class ResultController {
 			@RequestParam(value="date", defaultValue="date") String date) {
     	
     	NabsManager nm = new NabsManager(user);
-    	System.out.println("*********************"+date+"**********************");
     	return nm.getNotificationEvents(user, date, nm);
     }
 }
