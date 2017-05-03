@@ -1,12 +1,15 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import PhDProject.FriendsFamily.Models.User;
+import main.NabsDemo;
 import managers.NabsManager;
 import managers.ParamManager;
 
@@ -55,5 +58,16 @@ public class ResultController {
     	default:
     		return null;
     	}
+    }
+    
+    @RequestMapping("/users")
+    public User[] getParams() {
+    	
+    	User[] userArray = new User[NabsDemo.users.size()];
+    	for(int i=0; i<NabsDemo.users.size(); i++){
+    		userArray[i] = NabsDemo.users.get(i);
+    	}
+    	Arrays.sort(userArray);
+    	return userArray;
     }
 }

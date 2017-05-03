@@ -89,6 +89,11 @@ public class NabsDemo {
 						e.printStackTrace();
 					}
 	  			}
+	  			for(User user : users){
+	  				for(Notification n : user.getNotifications()){
+	  					n.setAppRank(n.getApp().getRank());
+	  				}
+	  			}
 	  			//saveUserList(users);
 	  	    	/*repo = new BeadRepoManager();
 	  	    	repo.activateBead("SenderInfoBead");

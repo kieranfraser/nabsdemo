@@ -25,7 +25,7 @@ import phd.utilities.RandomUtility;
  * @author kfraser
  *
  */
-public class User implements Serializable{
+public class User implements Serializable, Comparable<User>{
 	
 	private static final long serialVersionUID = -3207331950409327535L;
 
@@ -286,6 +286,12 @@ public class User implements Serializable{
 
 	public void setRandomChoice(ArrayList<Subject> randomChoice) {
 		this.randomChoice = randomChoice;
+	}
+
+	@Override
+	public int compareTo(User o) {
+		// TODO Auto-generated method stub
+		return this.id.compareTo(o.id);
 	}
 	
 	
