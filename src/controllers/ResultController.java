@@ -12,6 +12,7 @@ import PhDProject.FriendsFamily.Models.User;
 import main.NabsDemo;
 import managers.NabsManager;
 import managers.ParamManager;
+import masters.calendar.CalendarEvent;
 
 @CrossOrigin(origins = "*", maxAge=3600)
 @RestController
@@ -69,5 +70,14 @@ public class ResultController {
     	}
     	Arrays.sort(userArray);
     	return userArray;
+    }
+    
+    @RequestMapping("/notificationevents")
+    public CalendarEvent[] getNotificationEvents(@RequestParam(value="user", defaultValue="user") String user, 
+			@RequestParam(value="date", defaultValue="date") String date) {
+    	
+    	NabsManager nm = new NabsManager(user);
+    	System.out.println("*********************"+date+"**********************");
+    	return nm.getNotificationEvents(user, date, nm);
     }
 }

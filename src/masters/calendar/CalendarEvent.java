@@ -3,7 +3,9 @@ package masters.calendar;
 import java.io.Serializable;
 import java.util.Date;
 
-public class CalendarEvent implements Serializable{
+import PhDProject.FriendsFamily.Models.User;
+
+public class CalendarEvent implements Serializable, Comparable<CalendarEvent>{
 	
 	private static final long serialVersionUID = 4891968553707444654L;
 	
@@ -63,6 +65,11 @@ public class CalendarEvent implements Serializable{
 	@Override
 	public String toString() {
 		return "Calendar Event: "+this.summary+"\n Start Date:"+startDate+"\n End Date: "+endDate+"\n"; 
-	}	
+	}
+
+	@Override
+	public int compareTo(CalendarEvent event) {
+		return this.startDate.compareTo(event.startDate);
+	}
 	
 }

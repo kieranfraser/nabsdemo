@@ -289,9 +289,9 @@ public class User implements Serializable, Comparable<User>{
 	}
 
 	@Override
-	public int compareTo(User o) {
+	public int compareTo(User user) {
 		// TODO Auto-generated method stub
-		return this.id.compareTo(o.id);
+		return this.id.compareTo(user.id);
 	}
 	
 	

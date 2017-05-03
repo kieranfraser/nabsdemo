@@ -1,6 +1,9 @@
 package managers;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -12,6 +15,8 @@ import PhDProject.FriendsFamily.Models.Notification;
 import PhDProject.FriendsFamily.Models.Result;
 import PhDProject.FriendsFamily.Models.User;
 import main.NabsDemo;
+import masters.calendar.CalendarEvent;
+import masters.calendar.GoogleCalendarData;
 import masters.models.UpliftedNotification;
 import phd.utilities.DateUtility;
 
@@ -175,5 +180,23 @@ public class NabsManager {
 	
 	public User getSelectedUser(){
 		return selectedUser;
+	}
+
+	public CalendarEvent[] getNotificationEvents(String userId, String notificationDate, NabsManager nm){
+		
+		
+		ArrayList<CalendarEvent> events = null;
+		CalendarEvent[] result = null;
+		try {
+			events = GoogleCalendarData.getNextNEvents(10, DateUtility.stringToDate(notificationDate), nm);
+			result = new CalendarEvent[events.size()];
+			for(int i=0; i<events.size(); i++){
+				result[i] = events.get(i);
+			}
+		} catch (NumberFormatException | ParseException | IOException e) {
+			System.out.println("NabsManager: Error getting notification events.");
+		}
+		Arrays.sort(result);
+		return result;
 	}
 }

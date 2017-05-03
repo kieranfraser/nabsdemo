@@ -90,8 +90,11 @@ public class NabsDemo {
 					}
 	  			}
 	  			for(User user : users){
+	  				int i = 1;
 	  				for(Notification n : user.getNotifications()){
 	  					n.setAppRank(n.getApp().getRank());
+	  					n.setId(i);
+	  					i++;
 	  				}
 	  			}
 	  			//saveUserList(users);
