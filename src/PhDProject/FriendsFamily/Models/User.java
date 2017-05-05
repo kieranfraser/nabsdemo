@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -295,6 +296,12 @@ public class User implements Serializable, Comparable<User>{
 	}
 	
 	
+	public void sortNotifications(){
+		Collections.sort(this.notifications);
+	}
 	
+	public void sortEvents(){
+		Collections.sort(this.events);
+	}
 	
 }

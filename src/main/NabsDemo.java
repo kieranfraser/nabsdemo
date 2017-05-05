@@ -1,6 +1,8 @@
 package main;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,12 +21,14 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import PhDProject.FriendsFamily.Models.Event;
 import PhDProject.FriendsFamily.Models.Notification;
 import PhDProject.FriendsFamily.Models.User;
 import controllers.ResultController;
 import managers.BeadRepoManager;
 import managers.FirebaseManager;
 import masters.models.UpliftedNotification;
+import phd.utilities.DateFormatUtility;
 import phd.utilities.DateUtility;
 
 @SpringBootApplication
@@ -91,12 +95,15 @@ public class NabsDemo {
 	  			}
 	  			for(User user : users){
 	  				int i = 1;
+	  				user.sortNotifications();
 	  				for(Notification n : user.getNotifications()){
 	  					n.setAppRank(n.getApp().getRank());
 	  					n.setId(i);
 	  					i++;
 	  				}
+	  				user.sortEvents();
 	  			}
+	  			updateEventDates();
 	  			//saveUserList(users);
 	  	    	/*repo = new BeadRepoManager();
 	  	    	repo.activateBead("SenderInfoBead");
@@ -113,6 +120,31 @@ public class NabsDemo {
 	  		  }
 			@Override public void onCancelled(FirebaseError error) { }
 		});
+	}
+	
+	private static void updateEventDates() {
+		for(User user : users){
+			
+			LocalDateTime eventStart = !user.getEvents().isEmpty() ? user.getEvents().get(0).getInferredStartDate() : null;
+			String notificationStart = !user.getNotifications().isEmpty() ? user.getNotifications().get(0).getDate() : null;
+			
+			if(eventStart != null && notificationStart != null){
+				LocalDateTime notifDate = DateFormatUtility.convertStringToLocalDateTime(notificationStart);
+				
+				int difference = eventStart.compareTo(notifDate);
+				
+				if(difference!=0){
+					Duration duration = Duration.between(eventStart, notifDate);
+					for(Event e : user.getEvents()){
+						e.setInferredStartDate(e.getInferredStartDate().plus(duration));
+						e.setInferredEndDate(e.getInferredEndDate().plus(duration));
+					}
+					eventStart = eventStart.plus(duration);
+				}
+			}
+					
+		}
+		System.out.println("finished update event dates");
 	}
 	
 	private static void subscribeToWebEvents(){

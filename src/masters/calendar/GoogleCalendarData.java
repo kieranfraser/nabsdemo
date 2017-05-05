@@ -11,6 +11,7 @@ import PhDProject.FriendsFamily.Models.Event;
 import PhDProject.FriendsFamily.Models.User;
 import managers.NabsManager;
 import phd.utilities.DateFormatUtility;
+import phd.utilities.DateUtility;
 
 
 public class GoogleCalendarData {
@@ -46,6 +47,12 @@ public class GoogleCalendarData {
 		LocalDateTime notificationDate = DateFormatUtility.convertDateToLDT(dateFrom);
 		DayOfWeek dayOfWeek = notificationDate.getDayOfWeek();
 		
+
+		System.out.println("Printing notification date as LDT");
+		System.out.println(notificationDate);
+		System.out.println(notificationDate.getMonthValue());
+		System.out.println(notificationDate.getDayOfMonth());
+		
 		while(counter <10){
 
     		if(dayOfWeek.equals(DayOfWeek.MONDAY) || dayOfWeek.equals(DayOfWeek.TUESDAY) ||
@@ -75,6 +82,11 @@ public class GoogleCalendarData {
     		dayOfWeek = notificationDate.getDayOfWeek();
     		greaterDate = true;
 		}
+		System.out.println("Checking event dates conversion to caleventdate");
+		System.out.println(possibleEvents.get(0));
+		System.out.println(DateFormatUtility.convertLDTToCalendarEventDate(possibleEvents.get(0).getInferredEndDate()));
+		System.out.println(DateFormatUtility.convertLDTToCalendarEventDate(possibleEvents.get(0).getInferredEndDate()).getDay());
+		System.out.println(DateFormatUtility.convertLDTToCalendarEventDate(possibleEvents.get(0).getInferredEndDate()).getMonth());
 		
 		for(Event event: possibleEvents){
 			CalendarEvent calEvent = new CalendarEvent();

@@ -1,8 +1,11 @@
 package PhDProject.FriendsFamily.Models;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class Notification implements Serializable{
+import phd.utilities.DateUtility;
+
+public class Notification implements Serializable, Comparable<Notification>{
 	
 	private static final long serialVersionUID = 2628171005311587410L;
 	
@@ -105,5 +108,9 @@ public class Notification implements Serializable{
 	}
 	public void setDbId(String dbId) {
 		this.dbId = dbId;
+	}
+	@Override
+	public int compareTo(Notification notification) {
+		return DateUtility.stringToDate(this.date).compareTo(DateUtility.stringToDate(notification.date));
 	}	
 }

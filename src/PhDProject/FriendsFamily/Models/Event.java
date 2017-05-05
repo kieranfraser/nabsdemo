@@ -7,13 +7,15 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 
 import masters.calendar.CalendarEvent;
 import phd.utilities.DateFormatUtility;
+import phd.utilities.DateUtility;
 
 
-public class Event implements Serializable{
+public class Event implements Serializable, Comparable<Event>{
 	
 	private static final long serialVersionUID = 8221180848726009629L;
 
@@ -331,6 +333,11 @@ public class Event implements Serializable{
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	@Override
+	public int compareTo(Event event) {
+		return this.inferredStartDate.compareTo(event.inferredStartDate);
 	}
 	
 }
