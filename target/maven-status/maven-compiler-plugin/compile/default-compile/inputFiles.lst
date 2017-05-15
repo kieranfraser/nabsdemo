@@ -8,6 +8,7 @@ C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\fuzzylogic\AlertFuzzy.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\models\InformationBead.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\beadrepo\DateInfoBead.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\beadrepo\AlertInfoBead.java
+C:\Users\kfraser\workspaceMars\NAbsDemo\src\managers\SpeechSynthesisManager.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\inter\BeadOutputInterface.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\models\UpliftedNotification.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\constants\BeadType.java
@@ -18,6 +19,7 @@ C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\beadrepo\UserLocationInfoBea
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\PhDProject\FriendsFamily\Models\Subject.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\managers\ParamManager.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\phd\utilities\DateFormatUtility.java
+C:\Users\kfraser\workspaceMars\NAbsDemo\src\managers\UnderstandingManager.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\models\InfoItemFields.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\masters\fuzzylogic\SenderFuzzy.java
 C:\Users\kfraser\workspaceMars\NAbsDemo\src\managers\BeadRepoManager.java

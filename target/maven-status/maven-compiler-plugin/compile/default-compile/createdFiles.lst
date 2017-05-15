@@ -12,6 +12,7 @@ main\NabsDemo$1.class
 PhDProject\FriendsFamily\Models\Event.class
 masters\beadrepo\AppInfoBead.class
 masters\models\InformationBead.class
+managers\UnderstandingManager.class
 masters\inter\BeadInputInterface.class
 managers\FirebaseManager.class
 controllers\Result.class
