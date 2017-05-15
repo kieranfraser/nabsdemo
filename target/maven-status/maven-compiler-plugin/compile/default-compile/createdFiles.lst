@@ -12,11 +12,11 @@ main\NabsDemo$1.class
 PhDProject\FriendsFamily\Models\Event.class
 masters\beadrepo\AppInfoBead.class
 masters\models\InformationBead.class
+managers\UnderstandingManager.class
 masters\inter\BeadInputInterface.class
 managers\FirebaseManager.class
 controllers\Result.class
 controllers\ResultController.class
-managers\NabsManager$1.class
 masters\inter\BeadOutputInterface.class
 PhDProject\FriendsFamily\Models\Sender.class
 masters\inference\EventInference.class
@@ -32,6 +32,7 @@ masters\models\Triplet.class
 masters\beadrepo\AlertInfoBead.class
 main\NabsDemo$2.class
 phd\utilities\RandomUtility.class
+managers\SpeechSynthesisManager.class
 masters\fuzzylogic\SenderFuzzy.class
 masters\calendar\GoogleCalendarData.class
 PhDProject\FriendsFamily\Models\Result.class

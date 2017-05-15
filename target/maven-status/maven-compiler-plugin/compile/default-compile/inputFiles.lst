@@ -1,6 +1,7 @@
 C:\Users\Kieran\git\nabsdemo\src\managers\NabsManager.java
 C:\Users\Kieran\git\nabsdemo\src\masters\models\Triplet.java
 C:\Users\Kieran\git\nabsdemo\src\managers\ParamManager.java
+C:\Users\Kieran\git\nabsdemo\src\managers\UnderstandingManager.java
 C:\Users\Kieran\git\nabsdemo\src\masters\models\AlertOutput.java
 C:\Users\Kieran\git\nabsdemo\src\masters\models\InfoItemFields.java
 C:\Users\Kieran\git\nabsdemo\src\phd\utilities\DateFormatUtility.java
@@ -28,6 +29,7 @@ C:\Users\Kieran\git\nabsdemo\src\PhDProject\FriendsFamily\Models\Sender.java
 C:\Users\Kieran\git\nabsdemo\src\masters\constants\BeadType.java
 C:\Users\Kieran\git\nabsdemo\src\masters\constants\State.java
 C:\Users\Kieran\git\nabsdemo\src\masters\fuzzylogic\SenderFuzzy.java
+C:\Users\Kieran\git\nabsdemo\src\managers\SpeechSynthesisManager.java
 C:\Users\Kieran\git\nabsdemo\src\masters\inter\BeadInputInterface.java
 C:\Users\Kieran\git\nabsdemo\src\main\NabsDemo.java
 C:\Users\Kieran\git\nabsdemo\src\phd\utilities\RandomUtility.java

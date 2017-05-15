@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -12,6 +13,8 @@ import PhDProject.FriendsFamily.Models.User;
 import main.NabsDemo;
 import managers.NabsManager;
 import managers.ParamManager;
+import managers.SpeechSynthesisManager;
+import managers.UnderstandingManager;
 import masters.calendar.CalendarEvent;
 
 @CrossOrigin(origins = "*", maxAge=3600)
@@ -78,6 +81,20 @@ public class ResultController {
     	
     	NabsManager nm = new NabsManager(user);
     	return nm.getNotificationEvents(user, date, nm);
+    }
+    
+    @RequestMapping("/speechcheckcontinue")
+    public boolean getNotificationEvents(@RequestParam(value="response", defaultValue="response") String response) {
+    	
+    	UnderstandingManager um = new UnderstandingManager();
+    	return um.needToContinueUnderstanding(response);
+    }
+    
+    @RequestMapping("/texttospeech")
+    public InputStream getSpeech(@RequestParam(value="text", defaultValue="text") String text) {
+    	
+    	SpeechSynthesisManager ssm = new SpeechSynthesisManager();
+    	return ssm.getSpeech(text);
     }
     
     @RequestMapping("/resultSingle")

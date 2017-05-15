@@ -23,10 +23,12 @@ import com.firebase.client.ValueEventListener;
 
 import PhDProject.FriendsFamily.Models.Event;
 import PhDProject.FriendsFamily.Models.Notification;
+import PhDProject.FriendsFamily.Models.Subject;
 import PhDProject.FriendsFamily.Models.User;
 import controllers.ResultController;
 import managers.BeadRepoManager;
 import managers.FirebaseManager;
+import managers.UnderstandingManager;
 import masters.models.UpliftedNotification;
 import phd.utilities.DateFormatUtility;
 import phd.utilities.DateUtility;
@@ -102,8 +104,14 @@ public class NabsDemo {
 	  					i++;
 	  				}
 	  				user.sortEvents();
+	  				for(Notification n : user.getNotifications()){
+	  					if(n.getSender().contains("stranger") || n.getSender().contains("Stranger")){
+	  						System.out.println(user.getId() + " "+ n.getId());
+	  					}
+	  				}
 	  			}
 	  			updateEventDates();
+	  			new UnderstandingManager();
 	  			//saveUserList(users);
 	  	    	/*repo = new BeadRepoManager();
 	  	    	repo.activateBead("SenderInfoBead");
