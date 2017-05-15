@@ -25,6 +25,7 @@ public class NabsManager {
 	private BeadRepoManager repo;
 	
 	private User selectedUser = null;
+	private Notification selectedNotification = null;
 	
 	private int family = 9;
 	private int work = 5;
@@ -62,6 +63,24 @@ public class NabsManager {
     	results = new ArrayList<Result>();	  	
 	}	
 	
+	public NabsManager(String user, int notificationId){
+	  	selectedUser = getUserFromId(user);
+	  	selectedNotification = getNotificationFromId(notificationId);
+	  	
+	  	pm = new ParamManager();
+	  	
+	  	repo = new BeadRepoManager();
+    	repo.activateBead("SenderInfoBead");
+    	repo.activateBead("SubjectInfoBead");
+    	repo.activateBead("AlertInfoBead");
+    	repo.activateBead("UserLocationInfoBead");
+    	repo.activateBead("NotificationInfoBead");
+    	repo.activateBead("AppInfoBead");
+    	repo.initialize();
+	  	
+    	results = new ArrayList<Result>();	  	
+	}
+	
 	/**
 	 * Finds a given user in the current user list.
 	 * @param id
@@ -76,17 +95,24 @@ public class NabsManager {
 		return null;
 	}
 	
+	private Notification getNotificationFromId(int id){
+		 for(Notification n: selectedUser.getNotifications()){
+			 if(n.getId() == id){
+				 return n;
+			 }
+		 }
+		 return null;
+	}
+	
 	
 	public ArrayList<Result> fireNotifications(){
 		
 		System.out.println("*******************Firing notification******************************");
-		int i = 1;
 		for(Notification n: this.selectedUser.getNotifications()){
 			UpliftedNotification nToSend = new UpliftedNotification();
 			nToSend.setSender(n.getSender());
 			nToSend.setSubject(n.getSubject().getSubject());
 			nToSend.setApp(n.getApp().getName());
-			nToSend.setNotificationId(i);
 			nToSend.setSenderRank(n.getSenderRank());
 			nToSend.setSubjectRank(n.getSubjectRank());
 			nToSend.setAppRank(n.getAppRank());
@@ -103,39 +129,35 @@ public class NabsManager {
 				break;
 			}
 	    	repo.activateNotificationListener(nToSend, this);
-	    	i++;
 		}
 		return results;
 	}
 
-	private void singleNotificationToFire(){
-  			FirebaseManager.getDatabase().child("web/fireSingle").addValueEventListener( new ValueEventListener() {
-  	  		  @Override
-  	  		  public void onDataChange(DataSnapshot snapshot) {
-  		  			if(snapshot.getValue()!=null){
-  		  				System.out.println("single fire notification");
-  		  				HashMap result = snapshot.getValue(HashMap.class);
-  		  				UpliftedNotification n = new UpliftedNotification();
-  		  				HashMap app = (HashMap) result.get("app");
-  		  				HashMap subject = (HashMap) result.get("subject");
+	private void fireSingleNotification(){
+  			
+		UpliftedNotification nToSend = new UpliftedNotification();
+		nToSend.setSender(selectedNotification.getSender());
+		nToSend.setSubject(selectedNotification.getSubject().getSubject());
+		nToSend.setApp(selectedNotification.getApp().getName());
+		nToSend.setSenderRank(10);
+		nToSend.setSubjectRank(selectedNotification.getSubjectRank());
+		nToSend.setAppRank(selectedNotification.getAppRank());
+		nToSend.setDate(DateUtility.stringToDate(selectedNotification.getDate()));
+		switch(selectedNotification.getSubject().getSubject()){
+		case "family":
+		nToSend.setSubjectRank(family);
+		break;
+		case "work":
+			nToSend.setSubjectRank(work);
+			break;
+		case "social":
+			nToSend.setSubjectRank(social);
+			break;
+		}
+    	repo.activateNotificationListener(nToSend, this);
+		
+		//fireNotification(n, "Custom");
   		  				
-  		  				n.setNotificationId((Integer) result.get("id"));
-  		  				
-  		  				n.setSender((String) result.get("sender"));
-  		  				n.setSubject((String) subject.get("subject"));
-  		  				n.setApp((String) app.get("name"));
-  		  				n.setDate(DateUtility.stringToDate((String) result.get("date")));
-  		  				
-  		  				n.setSenderRank((Integer) result.get("senderRank"));
-  		  				n.setAppRank((Integer) result.get("appRank"));
-  		  				n.setSubjectRank((Integer) result.get("subjectRank"));
-  		  				
-  		  				//fireNotification(n, "Custom");
-  		  				
-  		  			}
-  	  		  }
-  	  		  @Override public void onCancelled(FirebaseError error) {}
-  		});
 	}
 	
 	public String getUserLocation() {

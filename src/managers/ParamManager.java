@@ -3,6 +3,8 @@ package managers;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import PhDProject.FriendsFamily.Models.Sender;
+
 public class ParamManager {
 
 	public static final String LOW = "LOW";
@@ -36,6 +38,10 @@ public class ParamManager {
 			 																25.000, 50.000, 70.001,
 			 																57.5, 77.5};
 	private ArrayList<Double> alertMParams;
+	
+	private Double[] senderRankings;
+	private Double[] subjectRankings;
+	private Double[] appRankings;
 	
 	public ParamManager(){
 		initializeParams();
@@ -144,6 +150,40 @@ public class ParamManager {
 	public void setAlertMParams(ArrayList<Double> alertMParams) {
 		this.alertMParams = alertMParams;
 	}
+
+	/**
+	 * Used when firing single notification option
+	 * @return
+	 */
+	public Double getSenderRankingForString(String senderValue) {
+		switch(senderValue){
+		case Sender.FAMILY:
+			return senderRankings[0];
+		default:
+			return null;
+		}
+	}
+
+	public void setSenderRankings(Double[] senderRankings) {
+		this.senderRankings = senderRankings;
+	}
+
+	public Double[] getSubjectRankingRankingForString() {
+		return subjectRankings;
+	}
+
+	public void setSubjectRankings(Double[] subjectRankings) {
+		this.subjectRankings = subjectRankings;
+	}
+
+	public Double[] getAppRankingForString() {
+		return appRankings;
+	}
+
+	public void setAppRankings(Double[] appRankings) {
+		this.appRankings = appRankings;
+	}
+	
 	
 	
 	

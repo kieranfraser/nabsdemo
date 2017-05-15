@@ -43,9 +43,9 @@ public class NabsDemo {
 	
 	private static User selectedUser = null;
 	
-	private static int family = 0;
-	private static int work = 0;
-	private static int social = 0;
+	private static int family = 5;
+	private static int work = 5;
+	private static int social = 5;
 	
 	// temp variables for getting contextual timings for alert
 	private static Date nextBreak = new Date();

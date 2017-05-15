@@ -79,4 +79,19 @@ public class ResultController {
     	NabsManager nm = new NabsManager(user);
     	return nm.getNotificationEvents(user, date, nm);
     }
+    
+    @RequestMapping("/resultSingle")
+    public ArrayList<PhDProject.FriendsFamily.Models.Result> resultSingle(
+    			@RequestParam(value="user", defaultValue="user") String user, 
+    			@RequestParam(value="notificationId", defaultValue="null") int notificationId,
+    			@RequestParam(value="ruleParams", defaultValue="null") String[] rules, 
+    			@RequestParam(value="subjectParams", defaultValue="null") Double[] subjectRankings,
+    			@RequestParam(value="senderParams", defaultValue="null") Double[] senderRankings,
+    			@RequestParam(value="appParams", defaultValue="null") Double[] appRankings) {
+  	
+    	
+    	NabsManager nm = new NabsManager(user);
+    	nm.pm.setAlertParams(rules);
+    	return nm.fireNotifications();
+    }
 }
