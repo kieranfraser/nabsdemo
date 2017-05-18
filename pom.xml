@@ -107,6 +107,36 @@
 		<artifactId>text-to-speech</artifactId>
 		<version>3.8.0</version>
 	</dependency>
+	
+	<!-- Used for conversation  -->
+	<dependency>
+		<groupId>com.ibm.watson.developer_cloud</groupId>
+		<artifactId>conversation</artifactId>
+		<version>3.8.0</version>
+	</dependency>
+	
+	<!-- For conversion of context (watson) -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.7.2</version>
+	  </dependency>
+	  
+	<!-- https://mvnrepository.com/artifact/org.json/json -->
+	<dependency>
+	    <groupId>org.json</groupId>
+	    <artifactId>json</artifactId>
+	    <version>20160810</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+	<dependency>
+	    <groupId>com.google.code.gson</groupId>
+	    <artifactId>gson</artifactId>
+	    <version>2.8.0</version>
+	</dependency>
+	
+	
   </dependencies>
   
   	<repositories>

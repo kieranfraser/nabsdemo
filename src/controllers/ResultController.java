@@ -1,13 +1,23 @@
 package controllers;
 
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.json.JSONException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
 
 import PhDProject.FriendsFamily.Models.User;
 import main.NabsDemo;
@@ -16,6 +26,7 @@ import managers.ParamManager;
 import managers.SpeechSynthesisManager;
 import managers.UnderstandingManager;
 import masters.calendar.CalendarEvent;
+import phd.utilities.ControllerUtility;
 
 @CrossOrigin(origins = "*", maxAge=3600)
 @RestController
@@ -97,7 +108,7 @@ public class ResultController {
     	return ssm.getSpeech(text);
     }
     
-    @RequestMapping("/resultSingle")
+    @RequestMapping("/resultsingle")
     public ArrayList<PhDProject.FriendsFamily.Models.Result> resultSingle(
     			@RequestParam(value="user", defaultValue="user") String user, 
     			@RequestParam(value="notificationId", defaultValue="null") int notificationId,
@@ -111,4 +122,66 @@ public class ResultController {
     	nm.pm.setAlertParams(rules);
     	return nm.fireNotifications();
     }
+    
+    @RequestMapping("/beginconvo")
+    public MessageResponse beginConvo() {
+    	
+    	UnderstandingManager ssm = new UnderstandingManager();
+    	return ssm.conversation(null, null);
+    }
+    
+    /*@RequestMapping("/continueconvo")
+    public MessageResponse continueConvo(@RequestParam(value="input", defaultValue="") String inputText,
+    		@RequestParam(value="context", defaultValue="") String convoContextString) {
+    	
+    	Map<String, Object> convoContext = null;
+		try {
+			convoContext = ControllerUtility.jsonToMap(new JSONObject(convoContextString));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("************** error $$$$$$$$$$$$$$$$$$$");
+		}
+    	
+    	UnderstandingManager ssm = new UnderstandingManager();
+    	return ssm.conversation(inputText, convoContext);
+    }*/
+    
+    @RequestMapping(method = RequestMethod.POST, value="/continueconvo")
+    public MessageResponse continueConvo(@RequestParam(value="input", defaultValue="") String inputText,
+    		@RequestBody String convoContextString) {
+    	//System.out.println(convoContextString);
+    	Gson g = new Gson(); 
+    	//Map<String, Object> map = new HashMap<String, Object>();
+    	System.out.println("jsonobj");
+    	System.out.println(convoContextString);
+    	System.out.println("converted to string");
+    	System.out.println(convoContextString.toString());
+    	//ObjectMapper mapper = new ObjectMapper();
+    	/*try {
+			map = mapper.readValue(convoContextString, new TypeReference<Map<String, String>>(){});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("************** error $$$$$$$$$$$$$$$$$$$");
+		}*/
+    	Type type = new TypeToken<Map<String, Object>>(){}.getType();
+    	Map<String, Object> convoContext = new HashMap<String, Object>();
+    	convoContext = g.fromJson(convoContextString, type);
+    	
+		/*try {
+			convoContext = ControllerUtility.jsonToMap(convoContextString);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("************** error $$$$$$$$$$$$$$$$$$$");
+		}*/
+    	System.out.println(convoContext);
+    	UnderstandingManager ssm = new UnderstandingManager();
+    	MessageResponse response = ssm.conversation(inputText, convoContext);
+    	System.out.println("*************");
+    	System.out.println(response.getOutput());
+    	System.out.println(response.getContext());
+    	return response;
+	}
 }

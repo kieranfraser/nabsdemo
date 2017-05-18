@@ -15,6 +15,7 @@ masters\models\InformationBead.class
 managers\UnderstandingManager.class
 masters\inter\BeadInputInterface.class
 managers\FirebaseManager.class
+controllers\WebConfig.class
 controllers\Result.class
 controllers\ResultController.class
 masters\inter\BeadOutputInterface.class
@@ -39,6 +40,7 @@ PhDProject\FriendsFamily\Models\Result.class
 main\NabsDemo.class
 main\NabsDemo$6.class
 masters\beadrepo\UserLocationInfoBead.class
+phd\utilities\ControllerUtility.class
 PhDProject\FriendsFamily\Models\Subject.class
 PhDProject\FriendsFamily\Models\Notification.class
 masters\beadrepo\SubjectInfoBead.class

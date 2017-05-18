@@ -48,7 +48,9 @@ public class NabsManager {
 	 */
 	public NabsManager(String user){
 	  	selectedUser = getUserFromId(user);
-	  	
+	  	for(Notification n: selectedUser.getNotifications()){
+	  		System.out.println(n.getId());
+	  	}
 	  	pm = new ParamManager();
 	  	
 	  	repo = new BeadRepoManager();
@@ -110,6 +112,7 @@ public class NabsManager {
 		System.out.println("*******************Firing notification******************************");
 		for(Notification n: this.selectedUser.getNotifications()){
 			UpliftedNotification nToSend = new UpliftedNotification();
+			nToSend.setNotificationId(n.getId());
 			nToSend.setSender(n.getSender());
 			nToSend.setSubject(n.getSubject().getSubject());
 			nToSend.setApp(n.getApp().getName());
@@ -136,6 +139,7 @@ public class NabsManager {
 	private void fireSingleNotification(){
   			
 		UpliftedNotification nToSend = new UpliftedNotification();
+		nToSend.setSender(selectedNotification.getSender());
 		nToSend.setSender(selectedNotification.getSender());
 		nToSend.setSubject(selectedNotification.getSubject().getSubject());
 		nToSend.setApp(selectedNotification.getApp().getName());
