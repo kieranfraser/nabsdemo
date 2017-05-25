@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.JSONException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
 
+import PhDProject.FriendsFamily.Models.Notification;
 import PhDProject.FriendsFamily.Models.User;
 import main.NabsDemo;
 import managers.NabsManager;
@@ -26,7 +26,6 @@ import managers.ParamManager;
 import managers.SpeechSynthesisManager;
 import managers.UnderstandingManager;
 import masters.calendar.CalendarEvent;
-import phd.utilities.ControllerUtility;
 
 @CrossOrigin(origins = "*", maxAge=3600)
 @RestController
@@ -123,6 +122,21 @@ public class ResultController {
     	return nm.fireNotifications();
     }
     
+    @RequestMapping("/resultforchangedelivery")
+    public PhDProject.FriendsFamily.Models.Result resultChangeDelivery(
+    			@RequestParam(value="user", defaultValue="user") String user,
+    			@RequestParam(value="notificationId", defaultValue="null") int notificationId,
+    			@RequestParam(value="ruleParams", defaultValue="null") String[] rules, 
+    			@RequestParam(value="notificationFeature", defaultValue="") String feature,
+    			@RequestParam(value="ranking", defaultValue="") int ranking) {
+  	
+    	
+    	NabsManager nm = new NabsManager(user, notificationId);
+    	nm.pm.setAlertParams(rules);
+    	return nm.fireForChangeDelivery(ranking, feature).get(0);
+    }
+    
+    
     @RequestMapping("/beginconvo")
     public MessageResponse beginConvo() {
     	
@@ -130,58 +144,19 @@ public class ResultController {
     	return ssm.conversation(null, null);
     }
     
-    /*@RequestMapping("/continueconvo")
-    public MessageResponse continueConvo(@RequestParam(value="input", defaultValue="") String inputText,
-    		@RequestParam(value="context", defaultValue="") String convoContextString) {
-    	
-    	Map<String, Object> convoContext = null;
-		try {
-			convoContext = ControllerUtility.jsonToMap(new JSONObject(convoContextString));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println("************** error $$$$$$$$$$$$$$$$$$$");
-		}
-    	
-    	UnderstandingManager ssm = new UnderstandingManager();
-    	return ssm.conversation(inputText, convoContext);
-    }*/
-    
     @RequestMapping(method = RequestMethod.POST, value="/continueconvo")
     public MessageResponse continueConvo(@RequestParam(value="input", defaultValue="") String inputText,
     		@RequestBody String convoContextString) {
-    	//System.out.println(convoContextString);
+
     	Gson g = new Gson(); 
-    	//Map<String, Object> map = new HashMap<String, Object>();
-    	System.out.println("jsonobj");
-    	System.out.println(convoContextString);
-    	System.out.println("converted to string");
-    	System.out.println(convoContextString.toString());
-    	//ObjectMapper mapper = new ObjectMapper();
-    	/*try {
-			map = mapper.readValue(convoContextString, new TypeReference<Map<String, String>>(){});
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println("************** error $$$$$$$$$$$$$$$$$$$");
-		}*/
+    	
     	Type type = new TypeToken<Map<String, Object>>(){}.getType();
     	Map<String, Object> convoContext = new HashMap<String, Object>();
     	convoContext = g.fromJson(convoContextString, type);
     	
-		/*try {
-			convoContext = ControllerUtility.jsonToMap(convoContextString);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println("************** error $$$$$$$$$$$$$$$$$$$");
-		}*/
     	System.out.println(convoContext);
     	UnderstandingManager ssm = new UnderstandingManager();
     	MessageResponse response = ssm.conversation(inputText, convoContext);
-    	System.out.println("*************");
-    	System.out.println(response.getOutput());
-    	System.out.println(response.getContext());
     	return response;
 	}
 }

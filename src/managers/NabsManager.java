@@ -122,7 +122,7 @@ public class NabsManager {
 			nToSend.setDate(DateUtility.stringToDate(n.getDate()));
 			switch(n.getSubject().getSubject()){
 			case "family":
-			nToSend.setSubjectRank(family);
+				nToSend.setSubjectRank(family);
 			break;
 			case "work":
 				nToSend.setSubjectRank(work);
@@ -134,6 +134,51 @@ public class NabsManager {
 	    	repo.activateNotificationListener(nToSend, this);
 		}
 		return results;
+	}
+	
+	public ArrayList<Result> fireForChangeDelivery(int ranking, String feature){
+		System.out.println("Fire for delivery change");
+		UpliftedNotification nToSend = new UpliftedNotification();
+		nToSend.setSender(selectedNotification.getSender());
+		nToSend.setSender(selectedNotification.getSender());
+		nToSend.setSubject(selectedNotification.getSubject().getSubject());
+		nToSend.setApp(selectedNotification.getApp().getName());
+		nToSend.setSenderRank(selectedNotification.getSenderRank());
+		nToSend.setSubjectRank(selectedNotification.getSubjectRank());
+		nToSend.setAppRank(selectedNotification.getAppRank());
+		nToSend.setDate(DateUtility.stringToDate(selectedNotification.getDate()));
+		switch(selectedNotification.getSubject().getSubject()){
+		case "family":
+		nToSend.setSubjectRank(family);
+		break;
+		case "work":
+			nToSend.setSubjectRank(work);
+			break;
+		case "social":
+			nToSend.setSubjectRank(social);
+			break;
+		}
+		
+		switch(feature){
+		case "sender":
+			nToSend.setSenderRank(ranking);
+			break;
+		case "subject":
+			nToSend.setSubjectRank(ranking);
+			break;
+		case "app":
+			nToSend.setAppRank(ranking);
+			break;
+		}
+		
+    	repo.activateNotificationListener(nToSend, this);
+    	System.out.println(ranking);
+    	System.out.println(feature);
+    	System.out.println(nToSend.getSenderRank());
+    	System.out.println(nToSend.getSubjectRank());
+    	System.out.println(nToSend.getAppRank());
+		System.out.println(results.get(0).getResult());
+    	return results;
 	}
 
 	private void fireSingleNotification(){
