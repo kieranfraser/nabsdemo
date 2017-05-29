@@ -112,6 +112,21 @@ public class NabsDemo {
 	  			}
 	  			updateEventDates();
 	  			new UnderstandingManager();
+	  			
+	  			int totUser = 0;
+	  			int totNot = 0;
+	  			int totEvent = 0;
+	  			for(User user : users){
+	  				if(user.getNotifications().size() >0){
+	  					totUser += 1;
+	  					totNot += user.getNotifications().size();
+	  					totEvent += user.getEvents().size();
+	  				}
+	  			}
+	  			System.out.println("number of users: "+users.size());
+	  			System.out.println("number of users w. notifications: "+totUser);
+	  			System.out.println("number of notifications: "+totNot);
+	  			System.out.println("number of events: "+totEvent);
 	  			//saveUserList(users);
 	  	    	/*repo = new BeadRepoManager();
 	  	    	repo.activateBead("SenderInfoBead");
