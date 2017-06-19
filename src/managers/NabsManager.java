@@ -122,15 +122,16 @@ public class NabsManager {
 			nToSend.setDate(DateUtility.stringToDate(n.getDate()));
 			switch(n.getSubject().getSubject()){
 			case "family":
-				nToSend.setSubjectRank(family);
+				nToSend.setSubjectRank(pm.getSubjectRanking()[0]);
 			break;
 			case "work":
-				nToSend.setSubjectRank(work);
+				nToSend.setSubjectRank(pm.getSubjectRanking()[1]);
 				break;
 			case "social":
-				nToSend.setSubjectRank(social);
+				nToSend.setSubjectRank(pm.getSubjectRanking()[2]);
 				break;
 			}
+			System.out.println("subjectRanking: "+nToSend.getSubject()+nToSend.getSubjectRank());
 	    	repo.activateNotificationListener(nToSend, this);
 		}
 		return results;

@@ -58,6 +58,18 @@ public class ResultController {
     	return nm.fireNotifications();
     }
     
+    @RequestMapping("/firesubjectalert")
+    public ArrayList<PhDProject.FriendsFamily.Models.Result> fireSubjectAlert(@RequestParam(value="user", defaultValue="user") String user, 
+    			@RequestParam(value="params", defaultValue="null") String[] params, 
+    			@RequestParam(value="rankings", defaultValue="null") int[] rankings) {
+  	
+    	
+    	NabsManager nm = new NabsManager(user);
+    	nm.pm.setAlertParams(params);
+    	nm.pm.setSubjectRankings(rankings);
+    	return nm.fireNotifications();
+    }
+    
     @RequestMapping("/params")
     public String[] getParams(@RequestParam(value="type", defaultValue="alert") String type) {
 

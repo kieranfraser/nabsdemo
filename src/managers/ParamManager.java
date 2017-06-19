@@ -19,9 +19,11 @@ public class ParamManager {
 	
 	
 	private String[] senderParams = {LOW, MEDIUM, MEDIUM, LOW, MEDIUM, HIGH, MEDIUM, HIGH, HIGH};
-	private String[] subjectParams = {LOW, MEDIUM, MEDIUM, MEDIUM, HIGH, HIGH, MEDIUM, HIGH, HIGH};
-	private String[] alertParams = {MUCHLATER, MUCHLATER, LATER, MUCHLATER, LATER, SOON, SOON, SOON, VERYSOON,
-			LATER, SOON, SOON, SOON, VERYSOON, VERYSOON, SOON, NOW, NOW, VERYSOON, VERYSOON, VERYSOON, VERYSOON, VERYSOON, VERYSOON, NOW, NOW, NOW};
+	private String[] subjectParams = {LOW, LOW, LOW, MEDIUM, MEDIUM, MEDIUM, MEDIUM, HIGH, HIGH};
+	private String[] alertParams = {MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, SOON, SOON, VERYSOON,
+			MUCHLATER, LATER, LATER, MUCHLATER, LATER, LATER, SOON, NOW, NOW, MUCHLATER, SOON, LATER, SOON, SOON, SOON, NOW, NOW, NOW};
+	/*private String[] alertParams = {MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER,
+			MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, MUCHLATER, NOW, NOW};*/
 	
 	private Double[] alertMembershipParams = {0.000, 0.000, 0.400,
 			 																0.200, 0.500, 0.800,
@@ -40,7 +42,7 @@ public class ParamManager {
 	private ArrayList<Double> alertMParams;
 	
 	private Double[] senderRankings;
-	private Double[] subjectRankings;
+	private int[] subjectRankings = {5, 5, 5, 5};  // in the form: family, work, social, interest
 	private Double[] appRankings;
 	
 	public ParamManager(){
@@ -168,11 +170,11 @@ public class ParamManager {
 		this.senderRankings = senderRankings;
 	}
 
-	public Double[] getSubjectRankingRankingForString() {
+	public int[] getSubjectRanking() {
 		return subjectRankings;
 	}
 
-	public void setSubjectRankings(Double[] subjectRankings) {
+	public void setSubjectRankings(int[] subjectRankings) {
 		this.subjectRankings = subjectRankings;
 	}
 

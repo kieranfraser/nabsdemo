@@ -120,6 +120,7 @@ public class AlertFuzzy {
 	}
 	
 	public double processalert(double sender, double subject, double app){
+		
 		senderInput.setInputValue(sender);
 		subjectInput.setInputValue(subject);
 		appInput.setInputValue(app);

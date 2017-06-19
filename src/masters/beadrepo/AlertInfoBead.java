@@ -53,6 +53,7 @@ Runnable{
 		// Mamdami inferrence controller 
 		AlertFuzzy alertFuzzy = new AlertFuzzy(nm);
 		double inferredValue = alertFuzzy.processalert(senderInput, subjectInput, appInput);
+		System.out.println("***********$$$$$$$$$$$$$$$$$$$* "+notificationIdPath+": "+inferredValue+":"+userLocation+" **************************************$$$$$$$$$$$$$$$$$$$");
 		
 		//String result = "Receive Notification "+this.getPartNumber()+" in: "+DateUtility.cleanMinutes(inferredValue)+"\n";
 		
@@ -60,11 +61,11 @@ Runnable{
 		
 		
 		// now - interrupt
-		if(inferredValue<5.0){ 
+		if(inferredValue<-1){ 
 			result = result + "Now "+this.getPartNumber()+"\n";
 		
 		// verysoon - next break
-		}else if(inferredValue<15){ 
+		}else if(inferredValue<30){ 
 			
 			if(userLocation == 1.0){ // if there's an event on
 				result = result + "Next break - "+nm.getNextBreak()+" - "+this.getPartNumber()+"\n";
@@ -75,7 +76,7 @@ Runnable{
 			}
 		
 		// soon - next free period
-		}else if(inferredValue<40){ 
+		}else if(inferredValue<50){ 
 			
 			
 			if(userLocation == 1.0){
@@ -86,7 +87,7 @@ Runnable{
 			}
 			
 		// Later & Much Later	
-		}else if(inferredValue<60){ 
+		}else if(inferredValue<70){ 
 			result = result + "Little Later "+nm.getNextContextRelevant()+" - "+"\n";
 		}
 		else{
